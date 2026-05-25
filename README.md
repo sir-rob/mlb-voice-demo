@@ -11,6 +11,8 @@ Instead of a standard, static text-to-speech engine, this demo uses **Gemini 3.5
 
 **🏗️ Architecture & Data Flow**
 
+![Local Image](./Assets/Architecture_DataFlow.png)
+
  \[User UI Interaction\] \---\> \[Simulated MLB JSON State\]  
                                      |  
                                      v  
@@ -38,9 +40,10 @@ To deploy this in your own Google Cloud project, you need:
 ### **1\. Clone this Repository**
 
 Clone this repository to your local machine or your Cloud Shell instance:  
-git clone https://github.com/\<your-username-or-org\>/mlb-voice-broadcast-demo.git  
+```
+git clone https://github.com/sir-rob/mlb-voice-broadcast-demo.git  
 cd mlb-voice-broadcast-demo
-
+```
 ## ---
 
 **🚀 Deployment Guide (Step-by-Step)**
@@ -49,17 +52,17 @@ cd mlb-voice-broadcast-demo
 
 In your terminal, set your Active GCP Project ID:
 ```  
-export PROJECT\_ID="YOUR\_PROJECT\_ID\_HERE"  
-gcloud config set project $PROJECT\_ID
+export PROJECT_ID="YOUR_PROJECT_ID_HERE"  
+gcloud config set project $PROJECT_ID
 ```
 ### **Step 2: Enable the Required APIs**
 
 Enable the primary service APIs required for compiling the container, hosting the serverless frontend, and running the generative model suite:  
 ```
-gcloud services enable \\  
-    aiplatform.googleapis.com \\  
-    run.googleapis.com \\  
-    artifactregistry.googleapis.com \\  
+gcloud services enable \
+    aiplatform.googleapis.com \
+    run.googleapis.com \
+    artifactregistry.googleapis.com \
     cloudbuild.googleapis.com
 ```
 ### **Step 3: Grant IAM Permissions to the Service Account**
@@ -67,26 +70,26 @@ gcloud services enable \\
 Cloud Run containers run securely under a specific service account identity. By default, it uses the **Compute Engine default service account** unless custom identities are declared.  
 To grant your Cloud Run container permission to call Vertex AI models (Gemini 3.5 Flash & Gemini 3.1 Flash TTS), you must bind the **Vertex AI User** (roles/aiplatform.user) role:  
 \# 1\. Fetch your Google Cloud Project Number  
-```export PROJECT\_NUMBER=$(gcloud projects describe $PROJECT\_ID \--format="value(projectNumber)")```
+```export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")```
 
 \# 2\. Define the default Compute Engine service account running the container  
-```export CLOUD\_RUN\_SA="${PROJECT\_NUMBER}-compute@developer.gserviceaccount.com"```
+```export CLOUD_RUN_SA="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"```
 
 \# 3\. Bind the Vertex AI User role to your service account  
 ```
-gcloud projects add-iam-policy-binding $PROJECT\_ID \\  
-    \--member="serviceAccount:${CLOUD\_RUN\_SA}" \\  
-    \--role="roles/aiplatform.user"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:${CLOUD_RUN_SA}" \
+    --role="roles/aiplatform.user"
 ```
 ### **Step 4: Deploy the Application to Cloud Run**
 
 Execute this command from inside the directory. Cloud Build will automatically compress your files, upload them to Artifact Registry, compile the secure Docker container, and deploy it to a serverless Cloud Run instance:  
 ```
-gcloud run deploy mlb-voice-broadcast-demo \\  
-    \--source . \\  
-    \--region us-central1 \\  
-    \--allow-unauthenticated \\  
-    \--set-env-vars GOOGLE\_CLOUD\_PROJECT=$PROJECT\_ID
+gcloud run deploy mlb-voice-broadcast-demo \
+    --source . \
+    --region us-central1 \
+    --allow-unauthenticated \
+    --set-env-vars GOOGLE_CLOUD_PROJECT=$PROJECT_ID
 ```
 *Note: When asked to authorize the creation of an Artifact Registry repository, type y to accept.*  
 Once completed, the terminal will print your secure URL:  
