@@ -13,20 +13,6 @@ Instead of a standard, static text-to-speech engine, this demo uses **Gemini 3.5
 
 ![Local Image](./Assets/Architecture_DataFlow.png)
 
- \[User UI Interaction\] \---\> \[Simulated MLB JSON State\]  
-                                     |  
-                                     v  
- \[Gemini 3.5 Flash\] \<--- (Drafts Script with Expressive \[Emotion\] Audio Tags)  
-                                     |  
-                                     v  
- \[Gemini 3.1 Flash TTS\] \<--- (Generates raw 24kHz Mono PCM Audio per Turn)  
-                                     |  
-                                     v  
- \[Python wave Module\] \---\> (Appends PCM bytes & wraps with standard RIFF WAV headers)  
-                                     |  
-                                     v  
- \[Streamlit Audio Player\] \<--- (Plays the natural, sequential sportscast audio stream)
-
 ## ---
 
 **🛠️ Prerequisites & Local Setup**
