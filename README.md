@@ -47,43 +47,47 @@ cd mlb-voice-broadcast-demo
 
 ### **Step 1: Initialize Your Project Variables**
 
-In your terminal, set your Active GCP Project ID:  
+In your terminal, set your Active GCP Project ID:
+```  
 export PROJECT\_ID="YOUR\_PROJECT\_ID\_HERE"  
 gcloud config set project $PROJECT\_ID
-
+```
 ### **Step 2: Enable the Required APIs**
 
 Enable the primary service APIs required for compiling the container, hosting the serverless frontend, and running the generative model suite:  
+```
 gcloud services enable \\  
     aiplatform.googleapis.com \\  
     run.googleapis.com \\  
     artifactregistry.googleapis.com \\  
     cloudbuild.googleapis.com
-
+```
 ### **Step 3: Grant IAM Permissions to the Service Account**
 
 Cloud Run containers run securely under a specific service account identity. By default, it uses the **Compute Engine default service account** unless custom identities are declared.  
 To grant your Cloud Run container permission to call Vertex AI models (Gemini 3.5 Flash & Gemini 3.1 Flash TTS), you must bind the **Vertex AI User** (roles/aiplatform.user) role:  
 \# 1\. Fetch your Google Cloud Project Number  
-export PROJECT\_NUMBER=$(gcloud projects describe $PROJECT\_ID \--format="value(projectNumber)")
+```export PROJECT\_NUMBER=$(gcloud projects describe $PROJECT\_ID \--format="value(projectNumber)")```
 
 \# 2\. Define the default Compute Engine service account running the container  
-export CLOUD\_RUN\_SA="${PROJECT\_NUMBER}-compute@developer.gserviceaccount.com"
+```export CLOUD\_RUN\_SA="${PROJECT\_NUMBER}-compute@developer.gserviceaccount.com"```
 
 \# 3\. Bind the Vertex AI User role to your service account  
+```
 gcloud projects add-iam-policy-binding $PROJECT\_ID \\  
     \--member="serviceAccount:${CLOUD\_RUN\_SA}" \\  
     \--role="roles/aiplatform.user"
-
+```
 ### **Step 4: Deploy the Application to Cloud Run**
 
 Execute this command from inside the directory. Cloud Build will automatically compress your files, upload them to Artifact Registry, compile the secure Docker container, and deploy it to a serverless Cloud Run instance:  
+```
 gcloud run deploy mlb-voice-broadcast-demo \\  
     \--source . \\  
     \--region us-central1 \\  
     \--allow-unauthenticated \\  
     \--set-env-vars GOOGLE\_CLOUD\_PROJECT=$PROJECT\_ID
-
+```
 *Note: When asked to authorize the creation of an Artifact Registry repository, type y to accept.*  
 Once completed, the terminal will print your secure URL:  
 Service \[mlb-voice-broadcast-demo\] has been deployed and is serving 100% of traffic.  
@@ -111,7 +115,7 @@ To get the absolute best crowd reaction when presenting this to clients or inter
 
 1. Open your deployed Streamlit URL.  
 2. Leave the default walk-off Home Run JSON values exactly as they are.  
-3. Click **Generate Live Broadcast Audio 🎙️**.  
+3. sClick **Generate Live Broadcast Audio 🎙️**.  
 4. Show the client the **Generated Broadcast Script** first, pointing out how the announcer turn was dynamically prefixed with \[screaming\] and the commentator's turn was prefixed with \[thoughtful\].  
 5. Play the audio. The room will hear the announcer (using the voice profile *Puck*) transition from standard reading into a loud, high-energy shout when Giancarlo Stanton hits the walk-off home run.
 
