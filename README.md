@@ -56,10 +56,14 @@ gcloud services enable \
 Cloud Run containers run securely under a specific service account identity. By default, it uses the **Compute Engine default service account** unless custom identities are declared.  
 To grant your Cloud Run container permission to call Vertex AI models (Gemini 3.5 Flash & Gemini 3.1 Flash TTS), you must bind the **Vertex AI User** (roles/aiplatform.user) role:  
 \# 1\. Fetch your Google Cloud Project Number  
-```export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")```
+```
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+```
 
 \# 2\. Define the default Compute Engine service account running the container  
-```export CLOUD_RUN_SA="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"```
+```
+export CLOUD_RUN_SA="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
+```
 
 \# 3\. Bind the Vertex AI User role to your service account  
 ```
@@ -104,7 +108,7 @@ To get the absolute best crowd reaction when presenting this to clients or inter
 
 1. Open your deployed Streamlit URL.  
 2. Leave the default walk-off Home Run JSON values exactly as they are.  
-3. sClick **Generate Live Broadcast Audio 🎙️**.  
+3. Click **Generate Live Broadcast Audio 🎙️**.  
 4. Show the client the **Generated Broadcast Script** first, pointing out how the announcer turn was dynamically prefixed with \[screaming\] and the commentator's turn was prefixed with \[thoughtful\].  
 5. Play the audio. The room will hear the announcer (using the voice profile *Puck*) transition from standard reading into a loud, high-energy shout when Giancarlo Stanton hits the walk-off home run.
 
