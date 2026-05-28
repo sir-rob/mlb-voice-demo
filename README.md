@@ -27,8 +27,8 @@ To deploy this in your own Google Cloud project, you need:
 
 Clone this repository to your local machine or your Cloud Shell instance:  
 ```
-git clone https://github.com/sir-rob/mlb-voice-broadcast-demo.git  
-cd mlb-voice-broadcast-demo
+git clone https://github.com/sir-rob/mlb-voice-demo.git  
+cd mlb-voice-demo
 ```
 ## ---
 
@@ -75,7 +75,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 Execute this command from inside the directory. Cloud Build will automatically compress your files, upload them to Artifact Registry, compile the secure Docker container, and deploy it to a serverless Cloud Run instance:  
 ```
-gcloud run deploy mlb-voice-broadcast-demo \
+gcloud run deploy mlb-voice-demo \
     --source . \
     --region us-central1 \
     --allow-unauthenticated \
@@ -83,8 +83,8 @@ gcloud run deploy mlb-voice-broadcast-demo \
 ```
 *Note: When asked to authorize the creation of an Artifact Registry repository, type y to accept.*  
 Once completed, the terminal will print your secure URL:  
-Service \[mlb-voice-broadcast-demo\] has been deployed and is serving 100% of traffic.  
-Service URL: https://mlb-voice-broadcast-demo-xxxxxx.a.run.app
+Service \[mlb-voice-demo\] has been deployed and is serving 100% of traffic.  
+Service URL: https://mlb-voice-demo-xxxxxx.a.run.app
 
 ## ---
 
